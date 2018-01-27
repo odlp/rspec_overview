@@ -1,3 +1,5 @@
+require "rspec_overview/formatter"
+require "rspec_overview/version"
+
 module RspecOverview
-  VERSION = "0.1.0"
 end
