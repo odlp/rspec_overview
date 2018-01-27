@@ -12,6 +12,7 @@ module RspecOverview
 
     def dump_summary(summary)
       summarize_by_type(summary.examples)
+      summarize_by_file(summary.examples)
     end
 
     private
@@ -19,14 +20,18 @@ module RspecOverview
     attr_reader :output
 
     def summarize_by_type(examples)
-      summarize_by(examples, column_name: "Type or Subfolder") do |example|
+      summarize_by("Type or Subfolder", examples) do |example|
         example.metadata[:type] ||
           example.file_path.slice(/.\/[^\/]+\/[^\/]+/) ||
           "none"
       end
     end
 
-    def summarize_by(examples, column_name:)
+    def summarize_by_file(examples)
+      summarize_by("File", examples) { |example| example.file_path }
+    end
+
+    def summarize_by(column_name, examples)
       data = {}
 
       examples.each do |example|

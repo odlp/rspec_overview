@@ -61,6 +61,34 @@ RSpec.describe RspecOverview::Formatter do
     end
   end
 
+  describe "summary by file" do
+    it "groups examples by file path and sums the execution run time" do
+      examples = [
+        example_double(file_path: "./spec/foo/foo_spec.rb", run_time: 1.0),
+        example_double(file_path: "./spec/foo/foo_spec.rb", run_time: 1.5),
+        example_double(file_path: "./spec/baz/baz_spec.rb", run_time: 1.0),
+      ]
+
+      dump_examples_as_summary(subject, examples)
+
+      expect(output.captures[2]).to eq "\nSummary by File"
+
+      table = output.captures[3]
+
+      expect(table.column_with_headings(0)).
+        to eq ["File", "./spec/foo/foo_spec.rb", "./spec/baz/baz_spec.rb"]
+
+      expect(table.column_with_headings(1)).
+        to eq ["Example count", 2, 1]
+
+      expect(table.column_with_headings(2)).
+        to eq ["Duration (s)", "2.5", "1"]
+
+      expect(table.column_with_headings(3)).
+        to eq ["Average per example (s)", "1.25", "1"]
+    end
+  end
+
   private
 
   def example_double(metadata: {}, run_time: 0.0, file_path: "")
