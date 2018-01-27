@@ -19,8 +19,10 @@ module RspecOverview
     attr_reader :output
 
     def summarize_by_type(examples)
-      summarize_by(examples, column_name: "Type") do |example|
-        example.metadata[:type]
+      summarize_by(examples, column_name: "Type or Subfolder") do |example|
+        example.metadata[:type] ||
+          example.file_path.slice(/.\/[^\/]+\/[^\/]+/) ||
+          "none"
       end
     end
 
