@@ -7,6 +7,7 @@ Gem::Specification.new do |spec|
   spec.version       = RspecOverview::VERSION
   spec.authors       = ["Oli Peate"]
   spec.email         = ["oliverp@gmail.com"]
+  spec.license       = "MIT"
 
   spec.summary       = "See an overview of your RSpec test suite"
   spec.homepage      = "https://github.com/odlp/rspec_overview"
