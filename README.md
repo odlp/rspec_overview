@@ -2,11 +2,11 @@
 
 [![Build Status](https://travis-ci.org/odlp/rspec_overview.svg?branch=master)](https://travis-ci.org/odlp/rspec_overview)
 
-Take `RspecOverview::Formatter` a spin when you're new to a project and need an
-overview:
+Take `RspecOverview::Formatter` for a spin when you're new to a project and need
+an overview:
 
 - How are the tests structured?
-- How many tests are there by meta-type (feature, model, controller)?
+- How many tests are there by type (feature, model, controller)?
 - Which tests are taking the most time?
 
 ## Usage
