@@ -20,11 +20,7 @@ module RspecOverview
     attr_reader :output
 
     def summarize_by_type(examples)
-      summarize_by("Type or Subfolder", examples) do |example|
-        example.metadata[:type] ||
-          example.file_path.slice(/.\/[^\/]+\/[^\/]+/) ||
-          "none"
-      end
+      summarize_by("Type or Subfolder", examples, &method(:type_or_subfolder))
     end
 
     def summarize_by_file(examples)
@@ -35,7 +31,7 @@ module RspecOverview
       data = {}
 
       examples.each do |example|
-        identifier = yield(example)
+        identifier = yield(example) || "none"
         data[identifier] ||= ResultRow.new(identifier)
         data[identifier].example_count += 1
         data[identifier].duration_raw += example.execution_result.run_time
@@ -45,7 +41,7 @@ module RspecOverview
         column_name, "Example count", "Duration (s)", "Average per example (s)"
       ]
 
-      rows = in_descending_duration(data).map do |_, row|
+      rows = values_in_descending_duration(data).map do |row|
         [
           row.identifier,
           row.example_count,
@@ -58,8 +54,12 @@ module RspecOverview
       print_table(headings: headings, rows: rows)
     end
 
-    def in_descending_duration(data)
-      data.sort_by { |_, row| row.duration_raw }.reverse_each
+    def type_or_subfolder(example)
+      example.metadata[:type] || example.file_path.slice(/.\/[^\/]+\/[^\/]+/)
+    end
+
+    def values_in_descending_duration(data)
+      data.values.sort_by(&:duration_raw).reverse_each
     end
 
     def helpers
