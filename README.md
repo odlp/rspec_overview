@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/odlp/rspec_overview.svg?branch=master)](https://travis-ci.org/odlp/rspec_overview)
 
-Take `RspecOverview::Formatter` a spin when you're new to a project & need an
+Take `RspecOverview::Formatter` a spin when you're new to a project and need an
 overview:
 
 - How are the tests structured?
@@ -11,7 +11,7 @@ overview:
 
 ## Usage
 
-In your `Gemfile`:
+Add the gem to your `Gemfile` and run `bundle`:
 
 ```ruby
 group :test do
@@ -19,8 +19,8 @@ group :test do
 end
 ```
 
-Then `bundle`. The overview formatter can be used standalone, or mix & match
-with other formatters:
+You can use the overview formatter standalone, or mix & match with other
+formatters:
 
 ```sh
 # With the progress formatter:
