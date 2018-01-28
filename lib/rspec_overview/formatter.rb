@@ -3,7 +3,7 @@ require "terminal-table"
 require_relative "result_row"
 
 module RspecOverview
-  class Formatter < ::RSpec::Core::Formatters::ProgressFormatter
+  class Formatter
     RSpec::Core::Formatters.register self, :dump_summary
 
     def initialize(output)
