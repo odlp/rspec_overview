@@ -8,9 +8,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Oli Peate"]
   spec.email         = ["oliverp@gmail.com"]
 
-  spec.summary       = ""
-  spec.description   = ""
-  spec.homepage      = ""
+  spec.summary       = "See an overview of your RSpec test suite"
+  spec.homepage      = "https://github.com/odlp/rspec_overview"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
