@@ -13,10 +13,7 @@ RSpec.describe RspecOverview::Formatter do
       ]
 
       dump_examples_as_summary(subject, examples)
-
-      expect(output.captures.first).to eq "\nSummary by Type or Subfolder"
-
-      table = output.captures[1]
+      table = table_with_title "Summary by Type or Subfolder"
 
       expect(table.column_with_headings(0)).
         to eq ["Type or Subfolder", "feature", "model"]
@@ -39,8 +36,7 @@ RSpec.describe RspecOverview::Formatter do
       ]
 
       dump_examples_as_summary(subject, examples)
-
-      table = output.captures[1]
+      table = table_with_title "Summary by Type or Subfolder"
 
       expect(table.column_with_headings(0)).
         to eq ["Type or Subfolder", "./spec/foo", "./spec/baz"]
@@ -65,10 +61,7 @@ RSpec.describe RspecOverview::Formatter do
       ]
 
       dump_examples_as_summary(subject, examples)
-
-      expect(output.captures[2]).to eq "\nSummary by File"
-
-      table = output.captures[3]
+      table = table_with_title "Summary by File"
 
       expect(table.column_with_headings(0)).
         to eq ["File", "./spec/foo/foo_spec.rb", "./spec/baz/baz_spec.rb"]
@@ -100,12 +93,18 @@ RSpec.describe RspecOverview::Formatter do
     )
   end
 
-  def dump_examples_as_summary(subjekt, examples)
+  def dump_examples_as_summary(formatter, examples)
     summary = instance_double(
       RSpec::Core::Notifications::SummaryNotification,
       examples: examples,
     )
 
-    subjekt.dump_summary(summary)
+    formatter.dump_summary(summary)
+  end
+
+  def table_with_title(title)
+    output.captures.detect do |capture|
+      capture.respond_to?(:title) && capture.title == title
+    end
   end
 end

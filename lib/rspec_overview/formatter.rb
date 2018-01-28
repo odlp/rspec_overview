@@ -37,21 +37,15 @@ module RspecOverview
         data[identifier].duration_raw += example.execution_result.run_time
       end
 
+      title = "Summary by #{column_name}"
+
       headings = [
         column_name, "Example count", "Duration (s)", "Average per example (s)"
       ]
 
-      rows = values_in_descending_duration(data).map do |row|
-        [
-          row.identifier,
-          row.example_count,
-          helpers.format_seconds(row.duration_raw),
-          helpers.format_seconds(row.avg_duration),
-        ]
-      end
+      rows = values_in_descending_duration(data).map(&method(:as_table_row))
 
-      output.puts "\nSummary by #{column_name}"
-      print_table(headings: headings, rows: rows)
+      print_table(title: title, headings: headings, rows: rows)
     end
 
     def type_or_subfolder(example)
@@ -62,12 +56,23 @@ module RspecOverview
       data.values.sort_by(&:duration_raw).reverse_each
     end
 
-    def helpers
-      RSpec::Core::Formatters::Helpers
+    def as_table_row(row)
+      [
+        row.identifier,
+        row.example_count,
+        format_seconds(row.duration_raw),
+        format_seconds(row.avg_duration),
+      ]
     end
 
-    def print_table(headings:, rows:)
-      output.puts Terminal::Table.new(headings: headings, rows: rows)
+    def format_seconds(duration)
+      RSpec::Core::Formatters::Helpers.format_seconds(duration)
+    end
+
+    def print_table(title:, headings:, rows:)
+      table = Terminal::Table.new(title: title, headings: headings, rows: rows)
+      output.puts "\n"
+      output.puts table
     end
   end
 end
