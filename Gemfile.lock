@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     rspec_overview (0.1.0)
+      rspec-core (~> 3.0)
       terminal-table (~> 1.6)
 
 GEM
