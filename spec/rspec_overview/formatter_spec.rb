@@ -1,6 +1,8 @@
 require "support/output_capturer"
 
-RSpec.describe RspecOverview::Formatter do
+RSpec.describe RspecOverview::Formatter, type: :formatter do
+  include FormatterHelpers
+
   let(:output) { OutputCapturer.new }
   subject { described_class.new(output) }
 
@@ -78,29 +80,6 @@ RSpec.describe RspecOverview::Formatter do
   end
 
   private
-
-  def example_double(metadata: {}, run_time: 0.0, file_path: "")
-    execution_result = instance_double(
-      RSpec::Core::Example::ExecutionResult,
-      run_time: run_time,
-    )
-
-    instance_double(
-      RSpec::Core::Example,
-      metadata: metadata,
-      file_path: file_path,
-      execution_result: execution_result,
-    )
-  end
-
-  def dump_examples_as_summary(formatter, examples)
-    summary = instance_double(
-      RSpec::Core::Notifications::SummaryNotification,
-      examples: examples,
-    )
-
-    formatter.dump_summary(summary)
-  end
 
   def table_with_title(title)
     output.captures.detect do |capture|

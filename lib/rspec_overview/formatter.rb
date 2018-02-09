@@ -1,5 +1,5 @@
 require "rspec/core"
-require "terminal-table"
+require_relative "output/table"
 require_relative "result_row"
 
 module RspecOverview
@@ -45,7 +45,12 @@ module RspecOverview
 
       rows = values_in_descending_duration(data).map(&method(:as_table_row))
 
-      print_table(title: title, headings: headings, rows: rows)
+      output_format.generate(
+        output: output,
+        title: title,
+        headings: headings,
+        rows: rows,
+      )
     end
 
     def type_or_subfolder(example)
@@ -69,10 +74,8 @@ module RspecOverview
       RSpec::Core::Formatters::Helpers.format_seconds(duration)
     end
 
-    def print_table(title:, headings:, rows:)
-      table = Terminal::Table.new(title: title, headings: headings, rows: rows)
-      output.puts "\n"
-      output.puts table
+    def output_format
+      RspecOverview::Output::Table.new
     end
   end
 end

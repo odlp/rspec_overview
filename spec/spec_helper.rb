@@ -1,5 +1,6 @@
 require "bundler/setup"
 require "rspec_overview"
+require "support/formatter_helpers"
 
 RSpec.configure do |config|
   config.example_status_persistence_file_path = ".rspec_status"
@@ -15,4 +16,6 @@ RSpec.configure do |config|
 
   config.order = :random
   Kernel.srand config.seed
+
+  config.include FormatterHelpers, type: :formatter
 end
