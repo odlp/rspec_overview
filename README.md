@@ -30,6 +30,14 @@ bundle exec rspec --format progress --format RspecOverview::Formatter
 bundle exec rspec --format documentation --format RspecOverview::Formatter
 ```
 
+### CSV format
+
+You can also produce a CSV for further analysis:
+
+```sh
+bundle exec rspec --format RspecOverview::FormatterCsv --out overview.csv
+```
+
 ## Example output
 
 Run against [thoughtbot/administrate][administrate]:
