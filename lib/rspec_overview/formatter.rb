@@ -1,6 +1,6 @@
 require "rspec/core"
 require_relative "output/table"
-require_relative "result_row"
+require_relative "result"
 
 module RspecOverview
   class Formatter
@@ -20,7 +20,9 @@ module RspecOverview
     attr_reader :output
 
     def summarize_by_type(examples)
-      summarize_by("Type or Subfolder", examples, &method(:type_or_subfolder))
+      summarize_by("Type or Subfolder", examples) do |example|
+        example.metadata[:type] || extract_subfolder(example.file_path)
+      end
     end
 
     def summarize_by_file(examples)
@@ -28,50 +30,36 @@ module RspecOverview
     end
 
     def summarize_by(column_name, examples)
-      data = {}
+      results = {}
 
       examples.each do |example|
         identifier = yield(example) || "none"
-        data[identifier] ||= ResultRow.new(identifier)
-        data[identifier].example_count += 1
-        data[identifier].duration_raw += example.execution_result.run_time
+        results[identifier] ||= Result.new(identifier)
+        results[identifier].example_count += 1
+        results[identifier].duration_raw += example.execution_result.run_time
       end
-
-      title = "Summary by #{column_name}"
 
       headings = [
         column_name, "Example count", "Duration (s)", "Average per example (s)"
       ]
 
-      rows = values_in_descending_duration(data).map(&method(:as_table_row))
-
       output_format.generate(
         output: output,
-        title: title,
+        title: "Summary by #{column_name}",
         headings: headings,
-        rows: rows,
+        rows: results_as_rows(results),
       )
     end
 
-    def type_or_subfolder(example)
-      example.metadata[:type] || example.file_path.slice(/.\/[^\/]+\/[^\/]+/)
+    def extract_subfolder(file_path)
+      file_path.slice(/.\/[^\/]+\/[^\/]+/)
     end
 
-    def values_in_descending_duration(data)
-      data.values.sort_by(&:duration_raw).reverse_each
-    end
-
-    def as_table_row(row)
-      [
-        row.identifier,
-        row.example_count,
-        format_seconds(row.duration_raw),
-        format_seconds(row.avg_duration),
-      ]
-    end
-
-    def format_seconds(duration)
-      RSpec::Core::Formatters::Helpers.format_seconds(duration)
+    def results_as_rows(results)
+      results.values
+        .sort_by(&:duration_raw)
+        .reverse_each
+        .map(&:to_a)
     end
 
     def output_format
