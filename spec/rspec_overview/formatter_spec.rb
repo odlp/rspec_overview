@@ -1,4 +1,5 @@
 require "support/output_capturer"
+require "rspec_overview/formatter"
 
 RSpec.describe RspecOverview::Formatter, type: :formatter do
   include FormatterHelpers

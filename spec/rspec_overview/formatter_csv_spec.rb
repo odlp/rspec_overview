@@ -1,5 +1,6 @@
-require "support/output_capturer"
 require "csv"
+require "rspec_overview/formatter_csv"
+require "support/output_capturer"
 
 RSpec.describe RspecOverview::FormatterCsv, type: :formatter do
   let(:output) { OutputCapturer.new }

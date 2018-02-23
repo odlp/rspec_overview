@@ -1,3 +1,4 @@
+require_relative "formatter"
 require_relative "output/csv"
 
 module RspecOverview

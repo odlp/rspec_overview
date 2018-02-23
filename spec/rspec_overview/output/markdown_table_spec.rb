@@ -1,3 +1,5 @@
+require "rspec_overview/output/markdown_table"
+
 RSpec.describe RspecOverview::Output::MarkdownTable do
   it "generates a markdown table" do
     table = described_class.new(
