@@ -45,52 +45,46 @@ Run against [thoughtbot/administrate][administrate]:
 [administrate]: https://github.com/thoughtbot/administrate
 
 ```
-Randomized with seed 40301
+Randomized with seed 16132
 ................................................................................
 ................................................................................
 ................................................................................
-................................................................................
-...........................................
+......................................................................
 
-Finished in 19.36 seconds (files took 3.99 seconds to load)
-363 examples, 0 failures
+Finished in 15.03 seconds (files took 6.02 seconds to load)
+310 examples, 0 failures
 
-+---------------------+---------------+--------------+-------------------------+
-|                         Summary by Type or Subfolder                         |
-+---------------------+---------------+--------------+-------------------------+
+# Summary by Type or Subfolder
+
 | Type or Subfolder   | Example count | Duration (s) | Average per example (s) |
-+---------------------+---------------+--------------+-------------------------+
-| feature             | 83            | 9.88         | 0.11905                 |
-| controller          | 46            | 3.56         | 0.07738                 |
-| generator           | 73            | 2.49         | 0.03408                 |
-| ./spec/lib          | 95            | 1.02         | 0.0107                  |
-| ./spec/i18n_spec.rb | 2             | 0.93344      | 0.46672                 |
-| view                | 15            | 0.75198      | 0.05013                 |
-| model               | 28            | 0.33824      | 0.01208                 |
-| ./spec/administrate | 5             | 0.06623      | 0.01325                 |
-| helper              | 7             | 0.02385      | 0.00341                 |
-| ./spec/dashboards   | 9             | 0.01684      | 0.00187                 |
-+---------------------+---------------+--------------+-------------------------+
+|---------------------|---------------|--------------|-------------------------|
+| feature             | 72            | 9.28         | 0.12889                 |
+| generator           | 65            | 1.83         | 0.0282                  |
+| controller          | 32            | 1.69         | 0.05293                 |
+| view                | 14            | 0.68246      | 0.04875                 |
+| ./spec/i18n_spec.rb | 2             | 0.58921      | 0.2946                  |
+| ./spec/lib          | 79            | 0.33908      | 0.00429                 |
+| model               | 28            | 0.29078      | 0.01038                 |
+| ./spec/administrate | 5             | 0.03813      | 0.00763                 |
+| ./spec/dashboards   | 9             | 0.024        | 0.00267                 |
+| helper              | 4             | 0.01062      | 0.00265                 |
 
-+-------------------------------------------------------------+---------------+--------------+-------------------------+
-|                                                   Summary by File                                                    |
-+-------------------------------------------------------------+---------------+--------------+-------------------------+
+
+# Summary by File
+
 | File                                                        | Example count | Duration (s) | Average per example (s) |
-+-------------------------------------------------------------+---------------+--------------+-------------------------+
-| ./spec/features/index_page_spec.rb                          | 11            | 2.09         | 0.1899                  |
-| ./spec/controllers/admin/blog/posts_controller_spec.rb      | 16            | 1.64         | 0.1025                  |
-| ./spec/features/orders_form_spec.rb                         | 7             | 1.28         | 0.1825                  |
-| ./spec/i18n_spec.rb                                         | 2             | 0.93344      | 0.46672                 |
-| ./spec/generators/routes_generator_spec.rb                  | 8             | 0.87447      | 0.10931                 |
-| ./spec/controllers/admin/log_entries_controller_spec.rb     | 6             | 0.84819      | 0.14137                 |
-| ./spec/generators/dashboard_generator_spec.rb               | 21            | 0.8094       | 0.03854                 |
-| ./spec/features/show_page_spec.rb                           | 9             | 0.79038      | 0.08782                 |
-| ./spec/lib/fields/date_time_spec.rb                         | 8             | 0.703        | 0.08787                 |
-| ./spec/features/orders_index_spec.rb                        | 6             | 0.67226      | 0.11204                 |
-| ./spec/features/log_entries_index_spec.rb                   | 6             | 0.66303      | 0.11051                 |
-| ./spec/features/search_spec.rb                              | 3             | 0.6555       | 0.2185                  |
-| <abridged>                                                  | <abridged>    | <abridged>   | <abridged>              |
-+-------------------------------------------------------------+---------------+--------------+-------------------------+
+|-------------------------------------------------------------|---------------|--------------|-------------------------|
+| ./spec/features/index_page_spec.rb                          | 11            | 2.76         | 0.25125                 |
+| ./spec/controllers/admin/customers_controller_spec.rb       | 15            | 1.11         | 0.07432                 |
+| ./spec/features/form_errors_spec.rb                         | 2             | 1.1          | 0.54813                 |
+| ./spec/generators/dashboard_generator_spec.rb               | 20            | 1.06         | 0.05293                 |
+| ./spec/features/orders_form_spec.rb                         | 7             | 1.01         | 0.14472                 |
+| ./spec/features/show_page_spec.rb                           | 10            | 0.67528      | 0.06753                 |
+| ./spec/i18n_spec.rb                                         | 2             | 0.58921      | 0.2946                  |
+| ./spec/features/search_spec.rb                              | 3             | 0.57751      | 0.1925                  |
+| ./spec/features/orders_index_spec.rb                        | 6             | 0.57129      | 0.09521                 |
+| ./spec/features/products_index_spec.rb                      | 4             | 0.54049      | 0.13512                 |
+| <abridged>                                                  |               |              |                         |
 
 Randomized with seed 40301
 ```
