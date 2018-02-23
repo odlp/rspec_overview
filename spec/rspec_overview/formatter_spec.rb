@@ -15,19 +15,15 @@ RSpec.describe RspecOverview::Formatter, type: :formatter do
       ]
 
       dump_examples_as_summary(subject, examples)
-      table = table_with_title "Summary by Type or Subfolder"
 
-      expect(table.column_with_headings(0)).
-        to eq ["Type or Subfolder", "feature", "model"]
+      expect(output.captures.first).to include "# Summary by Type or Subfolder"
 
-      expect(table.column_with_headings(1)).
-        to eq ["Example count", 2, 1]
+      table = output_tables.first
 
-      expect(table.column_with_headings(2)).
-        to eq ["Duration (s)", "2", "1.5"]
-
-      expect(table.column_with_headings(3)).
-        to eq ["Average per example (s)", "1", "1.5"]
+      expect(table.column(0)).to eq ["Type or Subfolder", "feature", "model"]
+      expect(table.column(1)).to eq ["Example count", 2, 1]
+      expect(table.column(2)).to eq ["Duration (s)", "2", "1.5"]
+      expect(table.column(3)).to eq ["Average per example (s)", "1", "1.5"]
     end
 
     it "uses the spec subfolder when a meta-type isn't available" do
@@ -38,19 +34,14 @@ RSpec.describe RspecOverview::Formatter, type: :formatter do
       ]
 
       dump_examples_as_summary(subject, examples)
-      table = table_with_title "Summary by Type or Subfolder"
+      table = output_tables.first
 
-      expect(table.column_with_headings(0)).
+      expect(table.column(0)).
         to eq ["Type or Subfolder", "./spec/foo", "./spec/baz"]
 
-      expect(table.column_with_headings(1)).
-        to eq ["Example count", 2, 1]
-
-      expect(table.column_with_headings(2)).
-        to eq ["Duration (s)", "2", "1"]
-
-      expect(table.column_with_headings(3)).
-        to eq ["Average per example (s)", "1", "1"]
+      expect(table.column(1)).to eq ["Example count", 2, 1]
+      expect(table.column(2)).to eq ["Duration (s)", "2", "1"]
+      expect(table.column(3)).to eq ["Average per example (s)", "1", "1"]
     end
   end
 
@@ -63,27 +54,25 @@ RSpec.describe RspecOverview::Formatter, type: :formatter do
       ]
 
       dump_examples_as_summary(subject, examples)
-      table = table_with_title "Summary by File"
 
-      expect(table.column_with_headings(0)).
+      expect(output.captures[3]).to include "# Summary by File"
+
+      table = output_tables.last
+
+      expect(table.column(0)).
         to eq ["File", "./spec/foo/foo_spec.rb", "./spec/baz/baz_spec.rb"]
 
-      expect(table.column_with_headings(1)).
-        to eq ["Example count", 2, 1]
-
-      expect(table.column_with_headings(2)).
-        to eq ["Duration (s)", "2.5", "1"]
-
-      expect(table.column_with_headings(3)).
-        to eq ["Average per example (s)", "1.25", "1"]
+      expect(table.column(1)).to eq ["Example count", 2, 1]
+      expect(table.column(2)).to eq ["Duration (s)", "2.5", "1"]
+      expect(table.column(3)).to eq ["Average per example (s)", "1.25", "1"]
     end
   end
 
   private
 
-  def table_with_title(title)
-    output.captures.detect do |capture|
-      capture.respond_to?(:title) && capture.title == title
+  def output_tables
+    output.captures.select do |capture|
+      capture.respond_to?(:column)
     end
   end
 end

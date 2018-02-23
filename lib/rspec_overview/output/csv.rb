@@ -3,16 +3,24 @@ require "csv"
 module RspecOverview
   module Output
     class Csv
-      def generate(output:, title:, headings:, rows:)
-        csv_string = CSV.generate(**csv_options, headers: headings) do |csv|
-          rows.each { |row| csv << row }
-        end
+      def initialize(headings:, rows:)
+        @headings = headings
+        @rows = rows
+      end
 
-        output.puts title
-        output.puts csv_string
+      def to_s
+        csv_content
       end
 
       private
+
+      attr_reader :headings, :rows
+
+      def csv_content
+        CSV.generate(**csv_options, headers: headings) do |csv|
+          rows.each { |row| csv << row }
+        end
+      end
 
       def csv_options
         { write_headers: true, force_quotes: true }

@@ -7,7 +7,7 @@ module RspecOverview
     private
 
     def output_format
-      RspecOverview::Output::Csv.new
+      RspecOverview::Output::Csv
     end
   end
 end

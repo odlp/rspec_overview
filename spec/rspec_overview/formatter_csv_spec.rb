@@ -15,9 +15,9 @@ RSpec.describe RspecOverview::FormatterCsv, type: :formatter do
 
       dump_examples_as_summary(subject, examples)
 
-      expect(output.captures[0]).to eq "Summary by Type or Subfolder"
+      expect(output.captures[0]).to include "# Summary by Type or Subfolder"
 
-      csv = CSV.parse(output.captures[1], headers: true)
+      csv = CSV.parse(output.captures[1].to_s, headers: true)
 
       expect(csv.by_col["Type or Subfolder"]).
         to eq ["feature", "model"]
@@ -43,9 +43,9 @@ RSpec.describe RspecOverview::FormatterCsv, type: :formatter do
 
       dump_examples_as_summary(subject, examples)
 
-      expect(output.captures[2]).to eq "Summary by File"
+      expect(output.captures[3]).to include "# Summary by File"
 
-      csv = CSV.parse(output.captures[3], headers: true)
+      csv = CSV.parse(output.captures[4].to_s, headers: true)
 
       expect(csv.by_col["File"]).
         to eq ["./spec/foo/foo_spec.rb", "./spec/baz/baz_spec.rb"]

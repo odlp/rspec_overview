@@ -1,5 +1,5 @@
 require "rspec/core"
-require_relative "output/table"
+require_relative "output/markdown_table"
 require_relative "result"
 
 module RspecOverview
@@ -43,12 +43,12 @@ module RspecOverview
         column_name, "Example count", "Duration (s)", "Average per example (s)"
       ]
 
-      output_format.generate(
-        output: output,
-        title: "Summary by #{column_name}",
+      output.puts "\n# Summary by #{column_name}\n\n"
+      output.puts output_format.new(
         headings: headings,
         rows: results_as_rows(results),
       )
+      output.puts "\n"
     end
 
     def extract_subfolder(file_path)
@@ -63,7 +63,7 @@ module RspecOverview
     end
 
     def output_format
-      RspecOverview::Output::Table.new
+      RspecOverview::Output::MarkdownTable
     end
   end
 end
