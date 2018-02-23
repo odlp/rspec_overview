@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.3.0
+- Switch default format to a markdown table
+  - Drops `terminal-table` dependency
+- Fix missing require when using the CSV formatter
+
 ## v0.2.0
 - Add CSV format support
 
