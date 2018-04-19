@@ -2,14 +2,10 @@ class OutputCapturer
   attr_reader :captures
 
   def initialize
-    self.captures = []
+    @captures = []
   end
 
   def puts(obj)
-    self.captures << obj
+    captures << obj
   end
-
-  private
-
-  attr_writer :captures
 end
