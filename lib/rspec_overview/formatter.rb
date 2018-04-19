@@ -24,7 +24,7 @@ module RspecOverview
         example.metadata[:type] || extract_subfolder(example.file_path)
       end
 
-      summarize_by(identifier: "Type or Subfolder", results: results_by_type)
+      output_summary(identifier: "Type or Subfolder", results: results_by_type)
     end
 
     def summarize_by_file(examples)
@@ -32,10 +32,14 @@ module RspecOverview
         example.file_path
       end
 
-      summarize_by(identifier: "File", results: results_by_file)
+      output_summary(identifier: "File", results: results_by_file)
     end
 
-    def summarize_by(identifier:, results:)
+    def extract_subfolder(file_path)
+      file_path.slice(/.\/[^\/]+\/[^\/]+/)
+    end
+
+    def output_summary(identifier:, results:)
       columns_attributes = {
         identifier => :identifier,
         "Example count" => :example_count,
@@ -51,10 +55,6 @@ module RspecOverview
       output.puts "\n# Summary by #{identifier}\n\n"
       output.puts output_body
       output.puts "\n"
-    end
-
-    def extract_subfolder(file_path)
-      file_path.slice(/.\/[^\/]+\/[^\/]+/)
     end
 
     def results_as_rows(results, attributes)
