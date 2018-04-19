@@ -16,10 +16,6 @@ class Result
     format_seconds(duration_raw)
   end
 
-  def to_a
-    [identifier, example_count, duration_seconds, avg_duration_seconds]
-  end
-
   private
 
   def format_seconds(duration)

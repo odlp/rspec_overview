@@ -20,34 +20,45 @@ module RspecOverview
     attr_reader :output
 
     def summarize_by_type(examples)
-      summarize_by("Type or Subfolder", examples) do |example|
+      results = collate_by_identifier(examples) do |example|
         example.metadata[:type] || extract_subfolder(example.file_path)
       end
+
+      summarize_by(identifier: "Type or Subfolder", results: results)
     end
 
     def summarize_by_file(examples)
-      summarize_by("File", examples) { |example| example.file_path }
+      results = collate_by_identifier(examples) do |example|
+        example.file_path
+      end
+
+      summarize_by(identifier: "File", results: results)
     end
 
-    def summarize_by(column_name, examples)
-      results = {}
-
-      examples.each do |example|
+    def collate_by_identifier(examples)
+      examples.each_with_object({}) do |example, results|
         identifier = yield(example) || "none"
         results[identifier] ||= Result.new(identifier)
         results[identifier].example_count += 1
         results[identifier].duration_raw += example.execution_result.run_time
       end
+    end
 
-      headings = [
-        column_name, "Example count", "Duration (s)", "Average per example (s)"
-      ]
+    def summarize_by(identifier:, results:)
+      columns_attributes = {
+        identifier => :identifier,
+        "Example count" => :example_count,
+        "Duration (s)" => :duration_seconds,
+        "Average per example (s)" => :avg_duration_seconds,
+      }
 
-      output.puts "\n# Summary by #{column_name}\n\n"
-      output.puts output_format.new(
-        headings: headings,
-        rows: results_as_rows(results),
+      output_body = output_format.new(
+        headings: columns_attributes.keys,
+        rows: results_as_rows(results.values, columns_attributes.values),
       )
+
+      output.puts "\n# Summary by #{identifier}\n\n"
+      output.puts output_body
       output.puts "\n"
     end
 
@@ -55,11 +66,10 @@ module RspecOverview
       file_path.slice(/.\/[^\/]+\/[^\/]+/)
     end
 
-    def results_as_rows(results)
-      results.values
-        .sort_by(&:duration_raw)
-        .reverse_each
-        .map(&:to_a)
+    def results_as_rows(results, attributes)
+      results.sort_by(&:duration_raw).reverse_each.map do |result|
+        attributes.map { |attribute| result.public_send(attribute) }
+      end
     end
 
     def output_format
