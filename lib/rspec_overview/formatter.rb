@@ -1,6 +1,6 @@
 require "rspec/core"
 require_relative "output/markdown_table"
-require_relative "result"
+require_relative "results_collator"
 
 module RspecOverview
   class Formatter
@@ -20,28 +20,19 @@ module RspecOverview
     attr_reader :output
 
     def summarize_by_type(examples)
-      results = collate_by_identifier(examples) do |example|
+      results_by_type = ResultsCollator.by_identifier(examples) do |example|
         example.metadata[:type] || extract_subfolder(example.file_path)
       end
 
-      summarize_by(identifier: "Type or Subfolder", results: results)
+      summarize_by(identifier: "Type or Subfolder", results: results_by_type)
     end
 
     def summarize_by_file(examples)
-      results = collate_by_identifier(examples) do |example|
+      results_by_file = ResultsCollator.by_identifier(examples) do |example|
         example.file_path
       end
 
-      summarize_by(identifier: "File", results: results)
-    end
-
-    def collate_by_identifier(examples)
-      examples.each_with_object({}) do |example, results|
-        identifier = yield(example) || "none"
-        results[identifier] ||= Result.new(identifier)
-        results[identifier].example_count += 1
-        results[identifier].duration_raw += example.execution_result.run_time
-      end
+      summarize_by(identifier: "File", results: results_by_file)
     end
 
     def summarize_by(identifier:, results:)
@@ -54,7 +45,7 @@ module RspecOverview
 
       output_body = output_format.new(
         headings: columns_attributes.keys,
-        rows: results_as_rows(results.values, columns_attributes.values),
+        rows: results_as_rows(results, columns_attributes.values),
       )
 
       output.puts "\n# Summary by #{identifier}\n\n"
