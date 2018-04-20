@@ -1,7 +1,7 @@
 require_relative "result"
 
 module RspecOverview
-  class ResultsCollator
+  class Collator
     def by_type_or_subfolder(examples)
       by_identifier(examples) do |example|
         example.metadata[:type] || extract_subfolder(example.file_path)

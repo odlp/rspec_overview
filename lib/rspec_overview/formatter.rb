@@ -1,6 +1,6 @@
 require "rspec/core"
 require_relative "output/markdown_table"
-require_relative "results_collator"
+require_relative "collator"
 
 module RspecOverview
   class Formatter
@@ -11,29 +11,17 @@ module RspecOverview
     end
 
     def dump_summary(summary)
-      summarize_by_type(summary.examples)
-      summarize_by_file(summary.examples)
+      examples = summary.examples
+
+      summarize_by("Type or Subfolder", collator.by_type_or_subfolder(examples))
+      summarize_by("File", collator.by_file_path(examples))
     end
 
     private
 
     attr_reader :output
 
-    def summarize_by_type(examples)
-      output_summary(
-        identifier: "Type or Subfolder",
-        results: ResultsCollator.new.by_type_or_subfolder(examples),
-      )
-    end
-
-    def summarize_by_file(examples)
-      output_summary(
-        identifier: "File",
-        results: ResultsCollator.new.by_file_path(examples),
-      )
-    end
-
-    def output_summary(identifier:, results:)
+    def summarize_by(identifier, results)
       columns_attributes = {
         identifier => :identifier,
         "Example count" => :example_count,
@@ -59,6 +47,10 @@ module RspecOverview
 
     def output_format
       RspecOverview::Output::MarkdownTable
+    end
+
+    def collator
+      Collator.new
     end
   end
 end
