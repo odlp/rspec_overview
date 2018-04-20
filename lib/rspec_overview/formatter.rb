@@ -24,16 +24,16 @@ module RspecOverview
     def summarize_by(identifier, results)
       sorted_results = results.sort_by(&:duration_raw).reverse_each
 
-      headings_attributes = {
+      headings, attributes = {
         identifier => :identifier,
         "Example count" => :example_count,
         "Duration (s)" => :duration_seconds,
         "Average per example (s)" => :avg_duration_seconds,
-      }
+      }.to_a.transpose
 
       output_body = output_format.new(
-        headings: headings_attributes.keys,
-        rows: pluck_attributes(sorted_results, headings_attributes.values),
+        headings: headings,
+        rows: pluck_attributes(sorted_results, attributes),
       )
 
       output.puts "\n# Summary by #{identifier}\n\n"
