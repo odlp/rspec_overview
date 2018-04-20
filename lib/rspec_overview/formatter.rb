@@ -22,7 +22,9 @@ module RspecOverview
     attr_reader :output
 
     def summarize_by(identifier, results)
-      columns_attributes = {
+      sorted_results = results.sort_by(&:duration_raw).reverse_each
+
+      headings_attributes = {
         identifier => :identifier,
         "Example count" => :example_count,
         "Duration (s)" => :duration_seconds,
@@ -30,8 +32,8 @@ module RspecOverview
       }
 
       output_body = output_format.new(
-        headings: columns_attributes.keys,
-        rows: results_as_rows(results, columns_attributes.values),
+        headings: headings_attributes.keys,
+        rows: pluck_attributes(sorted_results, headings_attributes.values),
       )
 
       output.puts "\n# Summary by #{identifier}\n\n"
@@ -39,8 +41,8 @@ module RspecOverview
       output.puts "\n"
     end
 
-    def results_as_rows(results, attributes)
-      results.sort_by(&:duration_raw).reverse_each.map do |result|
+    def pluck_attributes(results, attributes)
+      results.map do |result|
         attributes.map { |attribute| result.public_send(attribute) }
       end
     end
