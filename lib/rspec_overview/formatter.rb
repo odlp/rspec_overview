@@ -20,23 +20,17 @@ module RspecOverview
     attr_reader :output
 
     def summarize_by_type(examples)
-      results_by_type = ResultsCollator.by_identifier(examples) do |example|
-        example.metadata[:type] || extract_subfolder(example.file_path)
-      end
-
-      output_summary(identifier: "Type or Subfolder", results: results_by_type)
+      output_summary(
+        identifier: "Type or Subfolder",
+        results: ResultsCollator.new.by_type_or_subfolder(examples),
+      )
     end
 
     def summarize_by_file(examples)
-      results_by_file = ResultsCollator.by_identifier(examples) do |example|
-        example.file_path
-      end
-
-      output_summary(identifier: "File", results: results_by_file)
-    end
-
-    def extract_subfolder(file_path)
-      file_path.slice(/.\/[^\/]+\/[^\/]+/)
+      output_summary(
+        identifier: "File",
+        results: ResultsCollator.new.by_file_path(examples),
+      )
     end
 
     def output_summary(identifier:, results:)
