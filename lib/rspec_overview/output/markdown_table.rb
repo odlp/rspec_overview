@@ -24,9 +24,27 @@ module RspecOverview
       attr_reader :matrix
 
       def render_table
-        lines = matrix.row_vectors.map(&method(:render_row))
-        lines.insert(1, create_heading_divider(lines.first))
-        lines.join("\n") + "\n"
+        heading_row = render_row(header_data)
+        heading_divider = create_heading_divider(heading_row)
+        body_rows = render_rows(body_data).join("\n")
+
+        <<~OUTPUT
+          #{heading_row}
+          #{heading_divider}
+          #{body_rows}
+        OUTPUT
+      end
+
+      def header_data
+        matrix.row_vectors[0]
+      end
+
+      def body_data
+        matrix.row_vectors[1..-1]
+      end
+
+      def render_rows(data_rows)
+        data_rows.map(&method(:render_row))
       end
 
       def render_row(data_row)
