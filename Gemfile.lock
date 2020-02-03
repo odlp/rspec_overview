@@ -36,11 +36,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.16)
+  bundler (~> 2.0)
   pry-byebug (~> 3.5)
   rake (~> 10.0)
   rspec (~> 3.7)
   rspec_overview!
 
 BUNDLED WITH
-   1.17.2
+   2.1.2
